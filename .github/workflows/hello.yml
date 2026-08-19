@@ -1,0 +1,21 @@
+name: My First GitHub Action
+
+# Триггеры: запускать при пуше кода ИЛИ вручную кнопкой на сайте
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  say-hello-job:
+    runs-on: ubuntu-latest # Просим GitHub дать нам сервер на Linux
+    
+    steps:
+      - name: Print welcome message
+        run: echo "Привет! Мой первый пайплайн успешно запущен! 🎉"
+
+      - name: Show system information
+        run: |
+          echo "Текущее время на сервере:"
+          date
+          echo "Версия операционной системы:"
+          lsb_release -a
