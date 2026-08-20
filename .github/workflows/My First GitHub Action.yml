@@ -2,7 +2,7 @@ name: My First GitHub Action
 
 # Триггеры: запускать при пуше кода ИЛИ вручную кнопкой на сайте
 on:
-  push:
+  #push:
   workflow_dispatch:
 
 jobs:
