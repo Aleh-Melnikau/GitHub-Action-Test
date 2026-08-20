@@ -16,6 +16,16 @@ jobs:
       - name: Install Power Platform Tools
         uses: microsoft/powerplatform-actions/actions-install@v1
 
+      - name: Show .NET
+        run: |
+          dotnet --info
+          dotnet --list-sdks
+          dotnet --list-runtimes
+          
+      - name: Which
+        run: |
+          which dotnet
+
       - name: Show system information
         run: |
           echo "Текущее время на сервере:"
