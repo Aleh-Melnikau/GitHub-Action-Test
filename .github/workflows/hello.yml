@@ -13,6 +13,9 @@ jobs:
       - name: Print welcome message
         run: echo "Привет! Мой первый пайплайн успешно запущен! 🎉"
 
+      - name: Install Power Platform Tools
+        uses: microsoft/powerplatform-actions/actions-install@v1
+
       - name: Show system information
         run: |
           echo "Текущее время на сервере:"
