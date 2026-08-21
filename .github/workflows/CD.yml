@@ -39,4 +39,4 @@ jobs:
       with:
         solution-folder: solutions/GHActions
         solution-file: solutions/GHActions.zip
-        solution-type: Managed
+        solution-type: Unmanaged
