@@ -33,3 +33,10 @@ jobs:
         app-id: ${{env.CLIENT_ID}}
         client-secret: ${{ secrets.PowerPlatformSPN }}
         tenant-id: ${{env.TENANT_ID}}
+
+    - name: Pack solution
+      uses: microsoft/powerplatform-actions/pack-solution@v1.9.2
+      with:
+        solution-folder: solutions/GHActions
+        solution-file: solutions/GHActions.zip
+        solution-type: Managed
