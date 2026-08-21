@@ -39,7 +39,7 @@ jobs:
       with:
         solution-folder: solutions/GHActions
         solution-file: solutions/GHActions.zip
-        solution-type: Unmanaged
+        solution-type: Managed
 
     - name: Upload the ready to ship solution to GH artifact store
       uses: actions/upload-artifact@v4
