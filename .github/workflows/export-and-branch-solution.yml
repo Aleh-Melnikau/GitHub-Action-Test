@@ -25,9 +25,9 @@ on:
        default: solutions/
 env:
 #edit your values here
-  ENVIRONMENT_URL: 'https://spcdev.crm8.dynamics.com/'
-  CLIENT_ID: '0b8572a0-ac5a-47b5-9eb7-513af0c4997d'
-  TENANT_ID: '7d523251-2503-4739-9e96-6ac5b8e1a745'
+  ENVIRONMENT_URL: 'https://epam-rtb-tool-dev.crm4.dynamics.com/'
+  CLIENT_ID: '97976641-cbff-4dbd-b6f2-a26270a12e58'
+  TENANT_ID: 'b41b72d0-4e9f-4c26-8a69-f949f367c91d'
 permissions:
   contents: write
 jobs:
