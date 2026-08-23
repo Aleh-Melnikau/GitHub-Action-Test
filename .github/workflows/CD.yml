@@ -45,6 +45,7 @@ jobs:
       run: unzip -l solutions/GHActions.zip
 
     - name: Upload the ready to ship solution to GH artifact store
+      if: false
       uses: actions/upload-artifact@v4
       with:
         name: managedSolutions
