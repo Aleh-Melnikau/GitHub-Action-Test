@@ -83,3 +83,16 @@ jobs:
 
     - name: Check archive
       run: unzip -l ${{ env.solution_release_folder }}${{ env.solution_name }}_managed.zip
+
+    - name: Import solution to ${{ github.event.inputs.target_environment }} environment
+      uses: microsoft/powerplatform-actions/import-solution@v1.9.2
+      with:
+        environment-url: ${{vars.REPO_ENV_PP_URL}}
+        app-id: ${{secrets.REPO_ENV_PP_APPID}}
+        client-secret: ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
+        tenant-id: ${{secrets.REPO_ENV_PP_TENANTID}}
+        solution-file: ${{ env.solution_release_folder }}${{ env.solution_name }}_managed.zip
+        force-overwrite: true
+        publish-changes: true
+        run-asynchronously: true
+        max-async-wait-time: 60
