@@ -1,36 +1,74 @@
-# This is a basic workflow to help you get started with Actions
+name: export-and-branch-solution
+# Export solution from DEV environment
+#  unpack it and prepare, commit and push a git branch with the changes
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  #push:
-    #branches: [ "main" ]
-  #pull_request:
-    #branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      # Change this value
+      solution_name:
+        description: 'name of the solution to worked on from Power Platform'
+        required: true
+        default: GHActions
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+#edit your values here
+  ENVIRONMENT_URL: 'https://epam-rtb-tool-dev.crm4.dynamics.com/'
+  CLIENT_ID: '0acb930b-6a93-411e-bcb0-60719584ad84'
+  TENANT_ID: 'b41b72d0-4e9f-4c26-8a69-f949f367c91d'
+  solution_exported_folder: 'out/exported/'
+  solution_folder: 'out/solutions/'
+  solution_target_folder: 'solutions/'
+
+permissions:
+  contents: write
+
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  export-from-dev:
     runs-on: ubuntu-latest
+    # or you can say runs-on: windows-latest
+    env:
+      RUNNER_DEBUG: 1
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+      with:
+        lfs: true
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+    - name: Install Power Platform Tools
+      uses: microsoft/powerplatform-actions/actions-install@v1.9.2
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - name: who-am-i action
+      uses: microsoft/powerplatform-actions/who-am-i@v1.9.2
+      with:
+        environment-url: ${{env.ENVIRONMENT_URL}}
+        app-id: ${{env.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{env.TENANT_ID}}
+
+    - name: export-solution action
+      uses: microsoft/powerplatform-actions/export-solution@v1.9.2
+      with:
+        environment-url: ${{env.ENVIRONMENT_URL}}
+        app-id: ${{env.CLIENT_ID}}
+        client-secret: ${{ secrets.PowerPlatformSPN }}
+        tenant-id: ${{env.TENANT_ID}}
+        solution-name: ${{ github.event.inputs.solution_name }}
+        solution-output-file: ${{env.solution_exported_folder}}/${{ github.event.inputs.solution_name }}.zip
+        managed: true
+
+    - name: unpack-solution action
+      uses: microsoft/powerplatform-actions/unpack-solution@v1.9.2
+      with:
+        solution-file: ${{env.solution_exported_folder}}/${{ github.event.inputs.solution_name }}.zip
+        solution-folder: ${{env.solution_folder}}/${{ github.event.inputs.solution_name }}
+        solution-type: 'Managed'
+        overwrite-files: true
+
+    - name: branch-solution, prepare it for a PullRequest
+      uses: microsoft/powerplatform-actions/branch-solution@v1.9.2
+      with:
+        solution-folder: ${{env.solution_folder}}/${{ github.event.inputs.solution_name }}
+        solution-target-folder: ${{env.solution_target_folder}}/${{ github.event.inputs.solution_name }}
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        allow-empty-commit: true
