@@ -31,10 +31,12 @@ jobs:
           tenant-id: ${{secrets.REPO_ENV_PP_TENANTID}}
 
       - name: List solutions on target environment
-        run: pac auth create --name pacAuthProfile_${{ job.environment.name }} `
-          --environment ${{ vars.REPO_ENV_PP_URL }} `
-          --tenant ${{ secrets.REPO_ENV_PP_TENANTID }} `
-          --applicationId ${{ secrets.REPO_ENV_PP_APPID }} `
+        run: |
+          pac auth create \
+          --name pacAuthProfile_Dev \
+          --environment ${{ vars.REPO_ENV_PP_URL }} \
+          --tenant ${{ secrets.REPO_ENV_PP_TENANTID }} \
+          --applicationId ${{ secrets.REPO_ENV_PP_APPID }} \
           --clientSecret ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
 
       - name: List solutions on target environment
