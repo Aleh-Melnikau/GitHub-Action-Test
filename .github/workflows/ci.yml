@@ -7,15 +7,12 @@ on:
     inputs:
       # Change this value
       solution_name:
-        description: 'name of the solution to worked on from Power Platform'
+        description: 'Name of the solution to worked on from Power Platform'
         required: true
         default: GHActions
 
 env:
 #edit your values here
-  ENVIRONMENT_URL: 'https://am-study-sandbox.crm4.dynamics.com/'
-  CLIENT_ID: 'ebe07b05-0646-499f-bcdd-7fb3acf0a50c'
-  TENANT_ID: 'b41b72d0-4e9f-4c26-8a69-f949f367c91d'
   solution_exported_folder: 'out/exported/'
   solution_folder: 'out/solutions/'
   solution_target_folder: 'solutions/'
@@ -25,10 +22,9 @@ permissions:
 
 jobs:
   export-from-dev:
+    environment: Dev
     runs-on: ubuntu-latest
     # or you can say runs-on: windows-latest
-    env:
-      RUNNER_DEBUG: 1
 
     steps:
     - uses: actions/checkout@v4
@@ -41,18 +37,18 @@ jobs:
     - name: who-am-i action
       uses: microsoft/powerplatform-actions/who-am-i@v1.9.2
       with:
-        environment-url: ${{env.ENVIRONMENT_URL}}
-        app-id: ${{env.CLIENT_ID}}
-        client-secret: ${{ secrets.PowerPlatformSPN }}
-        tenant-id: ${{env.TENANT_ID}}
+        environment-url: ${{vars.REPO_ENV_PP_URL}}
+        app-id: ${{secrets.REPO_ENV_PP_APPID}}
+        client-secret: ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
+        tenant-id: ${{secrets.REPO_ENV_PP_TENANTID}}
 
     - name: export-solution action
       uses: microsoft/powerplatform-actions/export-solution@v1.9.2
       with:
-        environment-url: ${{env.ENVIRONMENT_URL}}
-        app-id: ${{env.CLIENT_ID}}
-        client-secret: ${{ secrets.PowerPlatformSPN }}
-        tenant-id: ${{env.TENANT_ID}}
+        environment-url: ${{vars.REPO_ENV_PP_URL}}
+        app-id: ${{secrets.REPO_ENV_PP_APPID}}
+        client-secret: ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
+        tenant-id: ${{secrets.REPO_ENV_PP_TENANTID}}
         solution-name: ${{ github.event.inputs.solution_name }}
         solution-output-file: ${{env.solution_exported_folder}}/${{ github.event.inputs.solution_name }}.zip
         managed: true
