@@ -16,13 +16,7 @@ jobs:
       - name: Delete artifacts
         shell: pwsh
         run: |
-          $artifacts = gh api repos/${{ github.repository }}/actions/artifacts --paginate --jq '.artifacts[].id'
-          foreach ($id in $artifacts) {
-          Write-Host "Deleting artifact $id"
-          gh api `
-          --method DELETE `
-          repos/${{ github.repository }}/actions/artifacts/$id
-          }
+          gh api repos/${{ github.repository }}/actions/artifacts --jq '.total_count'
 
       - name: Show .NET
         run: |
