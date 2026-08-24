@@ -4,46 +4,58 @@ on:
   workflow_dispatch:
   
 env:
-  ENVIRONMENT_URL: 'https://am-study-sandbox.crm4.dynamics.com/'
-  CLIENT_ID: 'ebe07b05-0646-499f-bcdd-7fb3acf0a50c'
-  TENANT_ID: 'b41b72d0-4e9f-4c26-8a69-f949f367c91d'
-permissions:
-  contents: write
+  solution_folder: 'solutions/'
+  solution_name: 'GHActions'
+  
 jobs:
-  import-to-test:
+  pack-solution:
+    name: Pack solution
     runs-on: ubuntu-latest
     env:
       RUNNER_DEBUG: 1
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         lfs: true
 
     - name: Install Power Platform Tools
-      uses: microsoft/powerplatform-actions/actions-install@v1.9.2
-
-    - name: who-am-i action
-      uses: microsoft/powerplatform-actions/who-am-i@v1.9.2
-      with:
-        environment-url: ${{env.ENVIRONMENT_URL}}
-        app-id: ${{env.CLIENT_ID}}
-        client-secret: ${{ secrets.PowerPlatformSPN }}
-        tenant-id: ${{env.TENANT_ID}}
+      uses: microsoft/powerplatform-actions/actions-install@v1.9.2    
 
     - name: Pack solution
       uses: microsoft/powerplatform-actions/pack-solution@v1.9.2
       with:
-        solution-folder: solutions/GHActions
-        solution-file: solutions/GHActions.zip
+        solution-folder: ${{ env.solution_folder }}${{ env.solution_name }}
+        solution-file: ${{ env.solution_folder }}${{ env.solution_name }}_managed.zip
         solution-type: Managed
 
     - name: Check archive
-      run: unzip -l solutions/GHActions.zip
+      run: unzip -l ${{ env.solution_folder }}${{ env.solution_name }}_managed.zip
 
     - name: Upload the ready to ship solution to GH artifact store
       if: false
       uses: actions/upload-artifact@v4
       with:
         name: managedSolutions
-        path: solutions/GHActions.zip
+        path: ${{ env.solution_folder }}${{ env.solution_name }}_managed.zip
+        retention-days: 1
+
+
+  import-to-test:
+    name: Import solution to TEST environment
+    runs-on: ubuntu-latest
+    env:
+      RUNNER_DEBUG: 1
+
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        lfs: true
+
+    - name: Who am I
+      uses: microsoft/powerplatform-actions/who-am-i@v1.9.2
+      with:
+        environment-url: ${{vars.REPO_ENV_PP_URL}}
+        app-id: ${{secrets.REPO_ENV_PP_APPID}}
+        client-secret: ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
+        tenant-id: ${{secrets.REPO_ENV_PP_TENANTID}}

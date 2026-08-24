@@ -19,8 +19,8 @@ permissions:
 jobs:
   export-from-dev:
 
+    name: Export solution from DEV environment
     environment: Dev
-
     runs-on: ubuntu-latest
 
     env:
@@ -34,7 +34,7 @@ jobs:
     - name: Install Power Platform Tools
       uses: microsoft/powerplatform-actions/actions-install@v1.9.2
 
-    - name: who-am-i action
+    - name: Who am I
       uses: microsoft/powerplatform-actions/who-am-i@v1.9.2
       with:
         environment-url: ${{vars.REPO_ENV_PP_URL}}
