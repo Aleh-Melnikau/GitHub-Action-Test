@@ -1,0 +1,9 @@
+{
+  "EnvironmentVariables": [
+    {
+      "SchemaName": "am_testvar",
+      "Value": "555"
+    }
+  ],
+  "ConnectionReferences": []
+}

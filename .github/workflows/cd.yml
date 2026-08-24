@@ -92,6 +92,8 @@ jobs:
         client-secret: ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
         tenant-id: ${{secrets.REPO_ENV_PP_TENANTID}}
         solution-file: ${{ env.solution_release_folder }}${{ env.solution_name }}_managed.zip
+        use-deployment-settings-file: true
+        deployment-settings-file: environments/${{ github.event.inputs.target_environment }}/EnvironmentSettings.json
         force-overwrite: true
         publish-changes: true
         run-asynchronously: true
