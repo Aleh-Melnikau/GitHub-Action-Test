@@ -1,4 +1,4 @@
-name: import-solution
+name: CD
 # Export solution from DEV environment
 #  unpack it and prepare, commit and push a git branch with the changes
 
