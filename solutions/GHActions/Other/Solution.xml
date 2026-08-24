@@ -79,6 +79,7 @@
     </Publisher>
     <RootComponents>
       <RootComponent type="29" id="{30e70aa1-7f9f-f111-b8dc-70a8a52b1e2a}" behavior="0" />
+      <RootComponent type="300" schemaName="cr7a9_appfromscratch_0033b" behavior="0" />
     </RootComponents>
     <MissingDependencies />
   </SolutionManifest>
