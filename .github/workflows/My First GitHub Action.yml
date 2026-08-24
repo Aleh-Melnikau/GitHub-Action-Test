@@ -7,6 +7,8 @@ on:
 
 env:
   GH_TOKEN: ${{ github.token }}
+  solution_name: 'GHActions'
+  solution_Exists: false
 
 permissions:
   actions: write
@@ -48,10 +50,13 @@ jobs:
         run: |
           solutionExists=$(
           pac solution list --json |
-          jq --arg name "$SOLUTION_NAME" \
+          jq --arg name ${{ env.solution_name }} \
           'any(.[]; .SolutionUniqueName == $name)'
           )
-          echo "solutionExists=$solutionExists" >> "$GITHUB_OUTPUT"
+          echo "solution_Exists=$solutionExists" >> "$GITHUB_ENV"
+
+      - name: Print result
+        run: echo "${{ env.solution_Exists }}"
 
       - name: Delete artifacts
         if: false
