@@ -44,16 +44,14 @@ jobs:
         run: pac solution list --json | jq
 
       - name: List solutions on target environment
-        if: false
+        if: true
         run: |
-          SOLUTION_NAME="GHActions"                
-          if pac solution list --json | jq -e ".[] | select(.UniqueName == \"$SOLUTION_NAME\")" > /dev/null; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-            echo "Solution found"
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-            echo "Solution not found"
-          fi
+          solutionExists=$(
+          pac solution list --json |
+          jq --arg name "$SOLUTION_NAME" \
+          'any(.[]; .SolutionUniqueName == $name)'
+          )
+          echo "solutionExists=$solutionExists" >> "$GITHUB_OUTPUT"
 
       - name: Delete artifacts
         if: false
