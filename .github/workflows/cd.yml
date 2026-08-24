@@ -5,6 +5,7 @@ on:
   
 env:
   solution_folder: 'solutions/'
+  solution_release_folder: 'out/release/'
   solution_name: 'GHActions'
   
 jobs:
@@ -64,3 +65,12 @@ jobs:
         app-id: ${{secrets.REPO_ENV_PP_APPID}}
         client-secret: ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
         tenant-id: ${{secrets.REPO_ENV_PP_TENANTID}}
+
+    - name: Fetch the ready to ship solution from GH artifact store
+      uses: actions/download-artifact@v4
+      with:
+        name: managedSolutions
+        path: ${{ env.solution_release_folder }}
+
+    - name: Check archive
+      run: unzip -l ${{ env.solution_release_folder }}${{ env.solution_name }}_managed.zip
