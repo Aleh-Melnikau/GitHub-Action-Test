@@ -5,6 +5,9 @@ on:
   #push:
   workflow_dispatch:
 
+env:
+GH_TOKEN: ${{ github.token }}
+
 jobs:
   say-hello-job:
     runs-on: ubuntu-latest # Просим GitHub дать нам сервер на Linux
