@@ -13,11 +13,22 @@ permissions:
 
 jobs:
   say-hello-job:
-    runs-on: ubuntu-latest # Просим GitHub дать нам сервер на Linux
+    runs-on: ubuntu-latest
+    environment: Dev
     
     steps:
-      - name: Print welcome message
-        run: echo "Привет! Мой первый пайплайн успешно запущен! 🎉"
+      - name: Install Power Platform Tools
+        uses: microsoft/powerplatform-actions/actions-install@v1.9.2
+        with:
+          add-tools-to-path: true
+
+      - name: Check connection
+        uses: microsoft/powerplatform-actions/who-am-i@v1.9.2
+        with:
+          environment-url: ${{vars.REPO_ENV_PP_URL}}
+          app-id: ${{secrets.REPO_ENV_PP_APPID}}
+          client-secret: ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
+          tenant-id: ${{secrets.REPO_ENV_PP_TENANTID}}
 
       - name: Delete artifacts
         if: false
@@ -26,20 +37,3 @@ jobs:
           gh api repos/${{ github.repository }}/actions/artifacts --jq '.total_count'
           $artifacts = gh api repos/${{ github.repository }}/actions/artifacts --paginate --jq '.artifacts[].id'
           foreach ($id in $artifacts) {gh api --method DELETE repos/${{ github.repository }}/actions/artifacts/$id}
-
-      - name: Show .NET
-        run: |
-          dotnet --info
-          dotnet --list-sdks
-          dotnet --list-runtimes
-          
-      - name: Which
-        run: |
-          which dotnet
-
-      - name: Show system information
-        run: |
-          echo "Текущее время на сервере:"
-          date
-          echo "Версия операционной системы:"
-          lsb_release -a
