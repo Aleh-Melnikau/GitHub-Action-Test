@@ -2,6 +2,15 @@ name: CD
 
 on:
   workflow_dispatch:
+    inputs:
+      target_environment:
+        type: choice
+        options:
+          - Test
+          - Prod
+        description: 'Target environment to import the solution to'
+        required: true
+        default: Test
   
 env:
   solution_folder: 'solutions/'
