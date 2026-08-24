@@ -41,7 +41,7 @@ jobs:
           --clientSecret ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
 
       - name: List solutions on target environment
-        run: pac solution list --json
+        run: pac solution list --json | jq
 
       - name: List solutions on target environment
         if: false
