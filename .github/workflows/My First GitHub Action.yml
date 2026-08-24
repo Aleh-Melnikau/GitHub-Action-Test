@@ -23,6 +23,7 @@ jobs:
           add-tools-to-path: true      
 
       - name: Check connection
+        if: false
         uses: microsoft/powerplatform-actions/who-am-i@v1.9.2
         with:
           environment-url: ${{vars.REPO_ENV_PP_URL}}
@@ -40,7 +41,15 @@ jobs:
           --clientSecret ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
 
       - name: List solutions on target environment
-        run: pac solution list
+        run: |
+          SOLUTION_NAME="GHActions"                
+          if pac solution list --json | jq -e ".[] | select(.UniqueName == \"$SOLUTION_NAME\")" > /dev/null; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Solution found"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Solution not found"
+          fi
 
       - name: Delete artifacts
         if: false
