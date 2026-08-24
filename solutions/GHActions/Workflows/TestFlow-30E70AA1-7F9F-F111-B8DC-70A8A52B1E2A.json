@@ -13,7 +13,7 @@
       "triggers": {
         "manual": {
           "metadata": {
-            "operationMetadataId": "d5025cd3-f158-4607-8aef-25634ac15585"
+            "operationMetadataId": "6d4e00a7-8f8a-474c-bf5f-2fac8bce19ad"
           },
           "type": "Request",
           "kind": "Button",
@@ -30,7 +30,7 @@
         "Compose": {
           "runAfter": {},
           "metadata": {
-            "operationMetadataId": "9b3a9995-9135-49e8-9d26-34f08288d2a4"
+            "operationMetadataId": "8a1f3e26-35f6-44d4-b064-b0c1e41dc312"
           },
           "type": "Compose",
           "inputs": 123

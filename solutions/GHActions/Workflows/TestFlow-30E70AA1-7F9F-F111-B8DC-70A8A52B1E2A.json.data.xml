@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Workflow WorkflowId="{2e0b0394-299d-f111-b8de-e4fb1ef9a8f2}" Name="Simple flow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <JsonFileName>/Workflows/Simpleflow-2E0B0394-299D-F111-B8DE-E4FB1EF9A8F2.json</JsonFileName>
+<Workflow WorkflowId="{30e70aa1-7f9f-f111-b8dc-70a8a52b1e2a}" Name="Test Flow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <JsonFileName>/Workflows/TestFlow-30E70AA1-7F9F-F111-B8DC-70A8A52B1E2A.json</JsonFileName>
   <Type>1</Type>
   <Subprocess>0</Subprocess>
   <Category>5</Category>
@@ -22,6 +22,6 @@
   <ModernFlowType>0</ModernFlowType>
   <PrimaryEntity>none</PrimaryEntity>
   <LocalizedNames>
-    <LocalizedName languagecode="1033" description="Simple flow" />
+    <LocalizedName languagecode="1033" description="Test Flow" />
   </LocalizedNames>
 </Workflow>
