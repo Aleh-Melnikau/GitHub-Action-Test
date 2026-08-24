@@ -22,8 +22,8 @@ jobs:
         shell: pwsh
         run: |
           [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-          Install-Module -Scope CurrentUser -Name Microsoft.Xrm.Data.Powershell -AllowClobber -Force
-          Import-Module Microsoft.Xrm.Data.Powershell
+          $module = Get-Module -ListAvailable Microsoft.Xrm.Data.Powershell | Select-Object -First 1
+          Import-Module $module.Path
 
       - name: Install Power Platform Tools
         uses: microsoft/powerplatform-actions/actions-install@v1.9.2
