@@ -38,11 +38,14 @@ jobs:
       with:
         name: managedSolutions
         path: ${{ env.solution_folder }}${{ env.solution_name }}_managed.zip
+        overwrite: true
         retention-days: 1
 
 
   import-to-test:
     name: Import solution to TEST environment
+    needs: pack-solution
+    environment: Test
     runs-on: ubuntu-latest
     env:
       RUNNER_DEBUG: 1
