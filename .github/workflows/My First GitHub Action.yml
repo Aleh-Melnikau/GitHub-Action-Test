@@ -18,8 +18,7 @@ jobs:
     environment: Dev
     
     steps:
-      - name: Delete artifacts
-        if: false
+      - name: Check if solution already exists in environment
         shell: pwsh
         run: |
           [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
