@@ -41,6 +41,10 @@ jobs:
           --clientSecret ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
 
       - name: List solutions on target environment
+        run: pac solution list --json
+
+      - name: List solutions on target environment
+        if: false
         run: |
           SOLUTION_NAME="GHActions"                
           if pac solution list --json | jq -e ".[] | select(.UniqueName == \"$SOLUTION_NAME\")" > /dev/null; then
