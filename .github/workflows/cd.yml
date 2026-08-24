@@ -51,10 +51,10 @@ jobs:
         retention-days: 1
 
 
-  import-to-test:
-    name: Import solution to TEST environment
+  import-solution:
+    name: Import solution to ${{ github.event.inputs.target_environment }} environment
     needs: pack-solution
-    environment: Test
+    environment: ${{ github.event.inputs.target_environment }}
     runs-on: ubuntu-latest
     env:
       RUNNER_DEBUG: 1
