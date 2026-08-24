@@ -22,6 +22,7 @@ jobs:
         shell: pwsh
         run: |
           [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+          Install-Module -Scope CurrentUser -Name Microsoft.Xrm.Data.Powershell -AllowClobber -Force
           $module = Get-Module -ListAvailable Microsoft.Xrm.Data.Powershell | Select-Object -First 1
           Import-Module $module.Path
 
