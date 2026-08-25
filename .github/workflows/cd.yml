@@ -92,7 +92,7 @@ jobs:
     - name: Pac auth create
       run: |
         pac auth create \
-        --name pacAuthProfile_${{ github.event.inputs.target_environment }} \
+        --name pacAuthProfileName \
         --environment ${{ vars.REPO_ENV_PP_URL }} \
         --tenant ${{ secrets.REPO_ENV_PP_TENANTID }} \
         --applicationId ${{ secrets.REPO_ENV_PP_APPID }} \
