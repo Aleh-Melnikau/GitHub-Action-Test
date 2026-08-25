@@ -65,7 +65,7 @@ jobs:
 
           solutionVersion=$(echo "$solutions" |
             jq -r --arg name "${{ env.solution_name }}" \
-            '.[] | select(.SolutionUniqueName == $name) | .Version')
+            '.[] | select(.SolutionUniqueName == $name) | .VersionNumber')
 
           echo "solution_exists=$solutionExists" >> "$GITHUB_ENV"
           echo "solution_version=$solutionVersion" >> "$GITHUB_ENV"
