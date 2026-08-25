@@ -31,10 +31,10 @@ jobs:
       - name: Install Power Platform Tools
         uses: microsoft/powerplatform-actions/actions-install@v1.9.2
         with:
-          add-tools-to-path: true      
+          add-tools-to-path: true
 
       - name: Check connection
-        if: false
+        if: true
         uses: microsoft/powerplatform-actions/who-am-i@v1.9.2
         with:
           environment-url: ${{vars.REPO_ENV_PP_URL}}
