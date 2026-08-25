@@ -14,8 +14,11 @@ on:
   
 env:
   solution_folder: 'solutions/'
+  solution_shipping_folder: 'out/shipping/'
   solution_release_folder: 'out/release/'
   solution_name: 'GHActions'
+  solution_exists: false
+  solution_version: ''
   
 jobs:
   pack-solution:
@@ -36,11 +39,11 @@ jobs:
       uses: microsoft/powerplatform-actions/pack-solution@v1.9.2
       with:
         solution-folder: ${{ env.solution_folder }}${{ env.solution_name }}
-        solution-file: ${{ env.solution_folder }}${{ env.solution_name }}_managed.zip
+        solution-file: ${{ env.solution_shipping_folder }}${{ env.solution_name }}_managed.zip
         solution-type: Managed
 
     - name: Check archive
-      run: unzip -l ${{ env.solution_folder }}${{ env.solution_name }}_managed.zip
+      run: unzip -l ${{ env.solution_shipping_folder }}${{ env.solution_name }}_managed.zip
 
     - name: Upload the ready to ship solution to GH artifact store
       uses: actions/upload-artifact@v4
@@ -75,9 +78,6 @@ jobs:
         client-secret: ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
         tenant-id: ${{secrets.REPO_ENV_PP_TENANTID}}
 
-    - name: List solutions on target environment
-      run: pac solution list
-
     - name: Fetch the ready to ship solution from GH artifact store
       uses: actions/download-artifact@v4
       with:
@@ -86,6 +86,30 @@ jobs:
 
     - name: Check archive
       run: unzip -l ${{ env.solution_release_folder }}${{ env.solution_name }}_managed.zip
+
+    - name: Pac auth create
+      run: |
+        pac auth create \
+        --name pacAuthProfile_${{ github.event.inputs.target_environment }} \
+        --environment ${{ vars.REPO_ENV_PP_URL }} \
+        --tenant ${{ secrets.REPO_ENV_PP_TENANTID }} \
+        --applicationId ${{ secrets.REPO_ENV_PP_APPID }} \
+        --clientSecret ${{ secrets.REPO_ENV_PP_CLIENTSECRET }}
+
+    - name: Check solution exists
+      run: |
+        solutions=$(pac solution list --json)
+
+        solutionExists=$(echo "$solutions" |
+          jq --arg name "${{ env.solution_name }}" \
+          'any(.[]; .SolutionUniqueName == $name)')
+
+        solutionVersion=$(echo "$solutions" |
+          jq -r --arg name "${{ env.solution_name }}" \
+          '.[] | select(.SolutionUniqueName == $name) | .VersionNumber')
+
+        echo "solution_exists=$solutionExists" >> "$GITHUB_ENV"
+        echo "solution_version=$solutionVersion" >> "$GITHUB_ENV"
 
     - name: Import solution to ${{ github.event.inputs.target_environment }} environment
       uses: microsoft/powerplatform-actions/import-solution@v1.9.2
@@ -97,7 +121,7 @@ jobs:
         solution-file: ${{ env.solution_release_folder }}${{ env.solution_name }}_managed.zip
         use-deployment-settings-file: true
         deployment-settings-file: environments/${{ github.event.inputs.target_environment }}/EnvironmentSettings.json
-        stage-and-upgrade: true
+        stage-and-upgrade: ${{ env.solution_exists }}
         force-overwrite: true
         publish-changes: true
         run-asynchronously: true
